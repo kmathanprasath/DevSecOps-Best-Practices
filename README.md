@@ -202,7 +202,7 @@ How it works:
 ### Real Example: 3-Tier Web Application
 
 ```
-[Browser] ──HTTPS──► [Load Balancer] ──► [App Server] ──► [Database]
+[Browser] HTTPS──► [Load Balancer] ──► [App Server] ──► [Database]
                             |                   |
                       Trust Boundary      Trust Boundary
 
@@ -2030,21 +2030,5 @@ Putting it all together - here is the complete DevSecOps security checklist orga
 
 ---
 
-### 6-Week Learning Path
-
-Week 1 - Git Security: Set up .gitignore, pre-commit hooks, Gitleaks, branch protection and CODEOWNERS
-
-Week 2 - IaC Security: Run Checkov on a Terraform project, set up HashiCorp Vault with OIDC
-
-Week 3 - Container Security: Rewrite a Dockerfile with multi-stage + distroless + non-root, scan with Trivy
-
-Week 4 - Kubernetes Security: Deploy to EKS with private subnets, configure namespaces, RBAC, network policies, Kyverno
-
-Week 5 - Application Security: Run Semgrep, Snyk, and OWASP ZAP against a staging environment
-
-Week 6 - Full Pipeline: Build the complete secure CI/CD pipeline with all stages automated and all gates enforced
-
----
-
 Built with a security-first mindset.
-Every commit is a security decision. Make it count.
+Every commit is a security decision. Make it count That's it. A Big Bye from Mathanprasath K!.
