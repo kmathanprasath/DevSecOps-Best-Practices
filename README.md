@@ -16,9 +16,9 @@
 
 ## 📖 What is This Guide?
 
-This is a **complete, beginner-to-advanced DevSecOps reference** — written so that even someone who has never touched a terminal can understand *why* security matters at every step of the software delivery lifecycle.
+This is a **complete, beginner-to-advanced DevSecOps reference** written so that even someone who has never touched a terminal can understand *why* security matters at every step of the software delivery lifecycle.
 
-Whether you are a developer, a QA engineer, a cloud engineer, or a complete beginner — by the end of this guide you will understand:
+Whether you are a developer, a QA engineer, a cloud engineer, or a complete beginner by the end of this guide you will understand, because i shared my overall experince in DevSecOps:
 
 - What DevSecOps is and why it exists
 - How to secure Git, Infrastructure as Code, Containers, and Kubernetes
@@ -29,24 +29,24 @@ Whether you are a developer, a QA engineer, a cloud engineer, or a complete begi
 
 ## 📚 Table of Contents
 
-1. [The Big Picture — What is DevSecOps?](#1-the-big-picture--what-is-devsecops)
+1. [The Big Picture What is DevSecOps?](#1-the-big-picture--what-is-devsecops)
 2. [Shift Left vs Shield Right](#2-shift-left-vs-shield-right)
 3. [Threat Modelling](#3-threat-modelling)
 4. [DevSecOps for Git](#4-devsecops-for-git)
-5. [IaC Security — Terraform](#5-iac-security--terraform)
-6. [Container Security — Docker](#6-container-security--docker)
+5. [IaC Security Terraform](#5-iac-security--terraform)
+6. [Container Security Docker](#6-container-security--docker)
 7. [Kubernetes Security](#7-kubernetes-security)
 8. [CI/CD Pipeline Security](#8-cicd-pipeline-security)
-9. [Application Security — SAST, DAST, SCA](#9-application-security--sast-dast-sca)
+9. [Application Security SAST, DAST, SCA](#9-application-security--sast-dast-sca)
 10. [The Ultimate Secure Pipeline](#10-the-ultimate-secure-pipeline)
 
 ---
 
-## 1. The Big Picture — What is DevSecOps?
+## 1. The Big Picture What is DevSecOps?
 
 ### The Old World (DevOps without Security)
 
-Imagine a factory that builds cars. The factory is fast — cars roll off the line every hour. But nobody checks the brakes until the car is already sold and on the road. When a brake fails, it is a disaster.
+Imagine a factory that builds cars. The factory is fast cars roll off the line every hour. But nobody checks the brakes until the car is already sold and on the road. When a brake fails, it is a disaster.
 
 That is exactly what happens when security is an afterthought in software.
 
@@ -58,7 +58,7 @@ Developer writes code → Code is tested → Code is deployed → Security team 
 
 ### The DevSecOps World
 
-DevSecOps embeds security checks at **every single stage** — from the moment a developer types the first line of code.
+DevSecOps embeds security checks at **every single stage** from the moment a developer types the first line of code.
 
 ```
 Developer writes code
@@ -93,7 +93,7 @@ Developer writes code
 
 ### Why AI Makes DevSecOps More Important, Not Less
 
-Today, AI writes roughly **80% of the code** in many organizations. Developers use GitHub Copilot, ChatGPT, and similar tools. This is great for speed — but AI:
+Today, AI writes roughly **80% of the code** in many organizations. Developers use GitHub Copilot, ChatGPT, and similar tools. This is great for speed but AI:
 
 - Copies patterns from the internet, including **vulnerable code from Stack Overflow**
 - Uses **outdated packages** with known CVEs
@@ -121,7 +121,7 @@ Dev writes code → Build → Test → Stage → Deploy → Production → Monit
 
 ### Shield Right (The Old Approach)
 
-Shield Right means you add security **only on the right side** — after the application is already deployed.
+Shield Right means you add security **only on the right side** after the application is already deployed.
 
 Examples of Shield Right tools:
 - API Gateway with rate limiting
@@ -134,7 +134,7 @@ Examples of Shield Right tools:
 
 ### Shift Left (The DevSecOps Approach)
 
-Shift Left means you move security checks as far **left** as possible — ideally to the developer's machine before code is even committed.
+Shift Left means you move security checks as far **left** as possible ideally to the developer's machine before code is even committed.
 
 ```
 🔒 Pre-commit hooks          → catches secrets before they leave the laptop
@@ -162,7 +162,7 @@ You do not choose one or the other. You do **both**:
 
 Before writing a single line of code, a DevSecOps engineer asks: **"What could go wrong?"**
 
-That is threat modelling — a structured way to identify, analyze, and mitigate security risks **before they become real problems**.
+That is threat modelling a structured way to identify, analyze, and mitigate security risks **before they become real problems**.
 
 ### The 3-Step Process
 
@@ -227,7 +227,7 @@ This is not hypothetical. It happens every week.
 
 ---
 
-### 4.1 `.gitignore` — The First Line of Defence
+### 4.1 `.gitignore` The First Line of Defence
 
 `.gitignore` tells Git: **"Do not track these files."**
 
@@ -240,13 +240,13 @@ Without it, a developer can accidentally commit:
 **Create a `.gitignore` at the root of every project:**
 
 ```gitignore
-# Environment files — NEVER commit these
+# Environment files NEVER commit these
 .env
 .env.local
 .env.production
 .env.*
 
-# Terraform state — contains real infrastructure secrets
+# Terraform state contains real infrastructure secrets
 *.tfstate
 *.tfstate.backup
 .terraform/
@@ -278,12 +278,12 @@ vendor/
 
 ---
 
-### 4.2 Pre-Commit Hooks — Catching Secrets Before They Leave Your Laptop
+### 4.2 Pre-Commit Hooks Catching Secrets Before They Leave Your Laptop
 
 `.gitignore` protects against accidental file commits. But what if a developer **hardcodes** a password directly inside `app.py`?
 
 ```python
-# BAD — hardcoded secret inside source code
+# BAD hardcoded secret inside source code
 DB_PASSWORD = "SuperSecret123!"
 ```
 
@@ -342,7 +342,7 @@ chmod +x .git/hooks/pre-commit
 
 #### Option B: The `pre-commit` Framework with Gitleaks (Recommended)
 
-The `pre-commit` framework is an open-source tool that manages hooks for you. Gitleaks is a tool that knows **thousands of secret patterns** — AWS keys, GitHub tokens, Stripe keys, Slack webhooks, and more.
+The `pre-commit` framework is an open-source tool that manages hooks for you. Gitleaks is a tool that knows **thousands of secret patterns** AWS keys, GitHub tokens, Stripe keys, Slack webhooks, and more.
 
 **Step 1: Install the pre-commit framework**
 
@@ -391,7 +391,7 @@ Now every `git commit` automatically runs Gitleaks. If a secret is found, the co
 
 ---
 
-### 4.3 Gitleaks — Scanning the Entire Repository History
+### 4.3 Gitleaks Scanning the Entire Repository History
 
 Pre-commit hooks protect future commits. But what about **secrets that were committed 2 years ago**?
 
@@ -428,7 +428,7 @@ If secrets are found in history, you must:
 
 ---
 
-### 4.4 Gitleaks in GitHub Actions — Automated Scanning on Every PR
+### 4.4 Gitleaks in GitHub Actions Automated Scanning on Every PR
 
 You cannot force every developer to install pre-commit. But you **can** enforce scanning in CI.
 
@@ -465,11 +465,11 @@ jobs:
 
 ---
 
-### 4.5 Branch Protection Rules — Enforcing Code Review
+### 4.5 Branch Protection Rules Enforcing Code Review
 
 By default, anyone with write access can push directly to `main`. This is dangerous.
 
-**Best practice:** No one — not even the repo owner — should push directly to `main`. All changes must go through a Pull Request.
+**Best practice:** No one not even the repo owner should push directly to `main`. All changes must go through a Pull Request.
 
 **How to set it up in GitHub:**
 
@@ -502,23 +502,23 @@ This means a PR can only be merged when:
 
 ---
 
-### 4.6 CODEOWNERS — Mandatory Expert Review
+### 4.6 CODEOWNERS Mandatory Expert Review
 
 In large projects, you want specific people to review specific parts of the codebase.
 
 ```
 # .github/CODEOWNERS
 
-# Global rule — security team reviews everything
+# Global rule security team reviews everything
 *                           @security-team
 
 # Terraform changes must be reviewed by cloud team
 /terraform/                 @cloud-team
 
-# Payment service — only senior engineers
+# Payment service only senior engineers
 /services/payments/         @senior-engineers @security-team
 
-# GitHub Actions workflows — DevSecOps team must review
+# GitHub Actions workflows DevSecOps team must review
 /.github/workflows/         @devsecops-team
 
 # Kubernetes manifests
@@ -529,13 +529,13 @@ When a PR touches any of these paths, the specified team is **automatically adde
 
 ---
 
-### 4.7 RBAC — Who Can Do What in Your Repo
+### 4.7 RBAC Who Can Do What in Your Repo
 
 Not everyone needs the same level of access.
 
 | Role | Access Level | Who Gets It |
 |------|-------------|-------------|
-| **Admin** | Full control — settings, delete repo, manage members | DevOps leads, repo owners |
+| **Admin** | Full control settings, delete repo, manage members | DevOps leads, repo owners |
 | **Maintain** | Manage issues, PRs, settings (no destructive actions) | Senior engineers |
 | **Write** | Push branches, create PRs, merge (with approval) | All developers |
 | **Triage** | Manage issues and PRs, cannot push code | QA, project managers |
@@ -547,7 +547,7 @@ GitHub Repo → Settings → Collaborators and teams → Manage access
 
 ---
 
-### 4.8 Dependabot — Automated Dependency Updates
+### 4.8 Dependabot Automated Dependency Updates
 
 Your application uses third-party packages. Those packages have vulnerabilities. Dependabot watches your dependencies and **automatically creates PRs** to update vulnerable packages.
 
@@ -592,9 +592,9 @@ Dependabot will:
 
 ---
 
-## 5. IaC Security — Terraform
+## 5. IaC Security Terraform
 
-Infrastructure as Code (IaC) means your cloud infrastructure — servers, databases, networks — is defined in code files (usually Terraform `.tf` files). This is powerful, but it introduces new security risks.
+Infrastructure as Code (IaC) means your cloud infrastructure servers, databases, networks is defined in code files (usually Terraform `.tf` files). This is powerful, but it introduces new security risks.
 
 ### Common IaC Security Mistakes
 
@@ -611,19 +611,19 @@ Infrastructure as Code (IaC) means your cloud infrastructure — servers, databa
 ### 5.1 What NOT to Do
 
 ```hcl
-# ❌ NEVER DO THIS — hardcoded credentials
+# ❌ NEVER DO THIS hardcoded credentials
 provider "aws" {
   region     = "us-east-1"
   access_key = "AKIAIOSFODNN7EXAMPLE"      # ← hardcoded AWS key
   secret_key = "wJalrXUtnFEMI/K7MDENG"    # ← hardcoded secret
 }
 
-# ❌ NEVER DO THIS — public S3 bucket
+# ❌ NEVER DO THIS public S3 bucket
 resource "aws_s3_bucket_acl" "data" {
   acl = "public-read"    # ← entire bucket exposed to internet
 }
 
-# ❌ NEVER DO THIS — open SSH to the world
+# ❌ NEVER DO THIS open SSH to the world
 resource "aws_security_group_rule" "ssh" {
   cidr_blocks = ["0.0.0.0/0"]    # ← anyone can SSH in
   from_port   = 22
@@ -634,7 +634,7 @@ resource "aws_security_group_rule" "ssh" {
 
 ---
 
-### 5.2 Checkov — Automated IaC Misconfiguration Scanner
+### 5.2 Checkov Automated IaC Misconfiguration Scanner
 
 Checkov is an open-source tool that scans your Terraform (and other IaC) files against **hundreds of security best practices**.
 
@@ -702,12 +702,12 @@ jobs:
 
 ---
 
-### 5.3 HashiCorp Vault — Secrets Management for CI/CD
+### 5.3 HashiCorp Vault Secrets Management for CI/CD
 
 #### The Problem with Storing Credentials in GitHub Secrets
 
 GitHub Secrets seem safe, but:
-- They are **long-lived** — the same key works for months or years
+- They are **long-lived** the same key works for months or years
 - If someone gets access to the repo settings, they can see them
 - There is no audit trail of who used the secret and when
 - Rotating them requires manual updates in every repo
@@ -720,7 +720,7 @@ The Flow:
 Developer → Push code → GitHub Actions starts
                               ↓
                     GitHub sends JWT token to Vault
-                    (using OIDC — OpenID Connect protocol)
+                    (using OIDC OpenID Connect protocol)
                               ↓
                     Vault verifies: "Is this really GitHub Actions
                     running on repo X, branch Y?"
@@ -775,7 +775,7 @@ jobs:
 **Best practices for `.gitignore` with Terraform:**
 
 ```gitignore
-# Terraform — NEVER commit these
+# Terraform NEVER commit these
 *.tfstate
 *.tfstate.backup
 .terraform/
@@ -789,7 +789,7 @@ override.tf.json
 
 ---
 
-## 6. Container Security — Docker
+## 6. Container Security Docker
 
 A container is like a lightweight virtual machine that packages your application and all its dependencies together. Docker is the most popular tool for building and running containers.
 
@@ -852,7 +852,7 @@ CMD ["npm", "start"]
 
 ---
 
-### 6.2 Multi-Stage Builds — Smaller Images, Smaller Attack Surface
+### 6.2 Multi-Stage Builds Smaller Images, Smaller Attack Surface
 
 Every package inside a container is a potential vulnerability. The more packages, the more attack surface.
 
@@ -875,7 +875,7 @@ All of these are unnecessary at runtime and are potential vulnerabilities.
 
 ```
 Stage 1 (Build):    Install everything needed to BUILD the app
-Stage 2 (Run):      Copy only the final artifact — nothing else
+Stage 2 (Run):      Copy only the final artifact nothing else
 ```
 
 **✅ Multi-stage Dockerfile:**
@@ -914,14 +914,14 @@ CMD ["node", "app.js"]
 
 ---
 
-### 6.3 Distroless Images — The Most Minimal Base Image
+### 6.3 Distroless Images The Most Minimal Base Image
 
 Even `node:25-slim` contains a shell (`bash`/`sh`), package managers (`apt`), and system utilities. An attacker who gets into the container can use these tools.
 
 **Distroless images** contain only:
 - The application runtime (e.g., Node.js)
 - The application itself
-- Nothing else — no shell, no package manager, no utilities
+- Nothing else no shell, no package manager, no utilities
 
 ```dockerfile
 # ─────────────────────────────────────────
@@ -972,7 +972,7 @@ CMD ["app.js"]
 
 ---
 
-### 6.4 `.dockerignore` — Do Not Copy Secrets Into Your Image
+### 6.4 `.dockerignore` Do Not Copy Secrets Into Your Image
 
 The `COPY . .` instruction copies **everything** in your project directory into the image. This includes:
 
@@ -985,7 +985,7 @@ The `COPY . .` instruction copies **everything** in your project directory into 
 ```dockerignore
 # .dockerignore
 
-# Secrets — NEVER include these
+# Secrets NEVER include these
 .env
 .env.*
 *.pem
@@ -1020,7 +1020,7 @@ docker-compose*
 
 ---
 
-### 6.5 Hardened `docker run` — Runtime Security
+### 6.5 Hardened `docker run` Runtime Security
 
 Even with a secure image, you can add extra protection at runtime:
 
@@ -1052,7 +1052,7 @@ docker run \
 
 ---
 
-### 6.6 Trivy — Scanning Images for CVEs
+### 6.6 Trivy Scanning Images for CVEs
 
 Before pushing an image to production, scan it for known vulnerabilities:
 
@@ -1115,7 +1115,7 @@ The key difference: **nodes live in private subnets**. There is no direct intern
 
 ---
 
-### 7.1 Namespaces — Isolation Between Teams
+### 7.1 Namespaces Isolation Between Teams
 
 By default, all pods in a Kubernetes cluster can see and interact with each other. This is a problem when multiple teams share one cluster.
 
@@ -1133,7 +1133,7 @@ Problem: A developer on the payments team can accidentally
          delete scores-configmap. There is no ownership boundary.
 ```
 
-**The solution — namespaces with resource quotas:**
+**The solution namespaces with resource quotas:**
 
 ```yaml
 # namespace-setup.yaml
@@ -1178,7 +1178,7 @@ kubectl apply -f deployment.yaml -n team-payments
 
 ---
 
-### 7.2 RBAC in Kubernetes — Fine-Grained Permissions
+### 7.2 RBAC in Kubernetes Fine-Grained Permissions
 
 Kubernetes RBAC controls **what actions** a pod or user can perform on **which resources**.
 
@@ -1213,7 +1213,7 @@ metadata:
 rules:
   - apiGroups: [""]
     resources: ["pods"]
-    verbs: ["get", "list", "watch"]   # READ ONLY — no create, delete, update
+    verbs: ["get", "list", "watch"]   # READ ONLY no create, delete, update
   - apiGroups: [""]
     resources: ["configmaps"]
     verbs: ["get"]                    # Can read configmaps but not modify
@@ -1262,7 +1262,7 @@ kubectl auth can-i delete pods \
 
 ---
 
-### 7.3 Network Policies — Controlling Pod-to-Pod Traffic
+### 7.3 Network Policies Controlling Pod-to-Pod Traffic
 
 By default, **every pod can talk to every other pod** in the cluster. This means if an attacker compromises your frontend pod, they can directly connect to your database pod.
 
@@ -1314,7 +1314,7 @@ kubectl apply -f network-policy-payments-db.yaml
 
 ---
 
-### 7.4 Kyverno — Policy Enforcement with Admission Controllers
+### 7.4 Kyverno Policy Enforcement with Admission Controllers
 
 **The problem:** A junior engineer deploys a pod using `image: mysql:latest`. Today it works. Tomorrow, `latest` gets a critical CVE. Your production database is now vulnerable.
 
@@ -1382,7 +1382,7 @@ spec:
                   runAsNonRoot: true
 ```
 
-**Policy 3: Auto-mutate — add security context if missing**
+**Policy 3: Auto-mutate add security context if missing**
 
 ```yaml
 # policy-add-security-context.yaml
@@ -1492,7 +1492,7 @@ spec:
 ```
 
 ```bash
-# This file is safe to commit to Git — it contains no actual secrets
+# This file is safe to commit to Git it contains no actual secrets
 kubectl apply -f external-secret-db.yaml
 
 # ESO automatically creates the real K8s Secret by fetching from Vault
@@ -1503,7 +1503,7 @@ kubectl get secret db-credentials -n team-payments
 
 ## 8. CI/CD Pipeline Security
 
-A CI/CD pipeline is the automated assembly line that takes code from a developer's commit to a running application in production. A DevSecOps engineer turns this pipeline into a **security gate** — code cannot reach production unless it passes every security check.
+A CI/CD pipeline is the automated assembly line that takes code from a developer's commit to a running application in production. A DevSecOps engineer turns this pipeline into a **security gate** code cannot reach production unless it passes every security check.
 
 ### The Secure Pipeline Architecture
 
@@ -1515,9 +1515,9 @@ Developer pushes code
 │                                                             │
 │  Stage 1: Secret Scanning (Gitleaks)                        │
 │           ↓ PASS                                            │
-│  Stage 2: SAST — Static Code Analysis (SonarQube/Semgrep)  │
+│  Stage 2: SAST Static Code Analysis (SonarQube/Semgrep)     │
 │           ↓ PASS                                            │
-│  Stage 3: SCA — Dependency Scanning (Snyk/OWASP Dependency) │
+│  Stage 3: SCA Dependency Scanning (Snyk/OWASP Dependency)   │
 │           ↓ PASS                                            │
 │  Stage 4: Build Docker Image                                │
 │           ↓                                                 │
@@ -1527,7 +1527,7 @@ Developer pushes code
 │           ↓ PASS                                            │
 │  Stage 7: Deploy to Staging                                 │
 │           ↓                                                 │
-│  Stage 8: DAST — Dynamic Testing (OWASP ZAP)               │
+│  Stage 8: DAST Dynamic Testing (OWASP ZAP)                  │
 │           ↓ PASS                                            │
 │  Stage 9: Deploy to Production                              │
 └─────────────────────────────────────────────────────────────┘
@@ -1568,7 +1568,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # ─────────────────────────────────────────
-  # Stage 2: SAST — Static Code Analysis
+  # Stage 2: SAST Static Code Analysis
   # ─────────────────────────────────────────
   sast:
     name: Static Code Analysis
@@ -1592,7 +1592,7 @@ jobs:
           sarif_file: semgrep.sarif
 
   # ─────────────────────────────────────────
-  # Stage 3: SCA — Dependency Scanning
+  # Stage 3: SCA Dependency Scanning
   # ─────────────────────────────────────────
   sca:
     name: Dependency Vulnerability Scan
@@ -1681,7 +1681,7 @@ jobs:
         run: kubectl apply -f k8s/ -n staging
 
   # ─────────────────────────────────────────
-  # Stage 8: DAST — Dynamic Testing
+  # Stage 8: DAST Dynamic Testing
   # ─────────────────────────────────────────
   dast:
     name: Dynamic Application Security Testing
@@ -1722,7 +1722,7 @@ jobs:
 
 ---
 
-## 9. Application Security — SAST, DAST, SCA
+## 9. Application Security SAST, DAST, SCA
 
 These three testing methods cover different angles of application security. Together, they form a complete picture.
 
@@ -1734,7 +1734,7 @@ DAST  →  Attacks your running application           (like a real hacker)
 
 ---
 
-### 9.1 SAST — Static Application Security Testing
+### 9.1 SAST Static Application Security Testing
 
 SAST analyzes your **source code** without executing it. It looks for patterns that indicate security vulnerabilities.
 
@@ -1772,12 +1772,12 @@ semgrep --config=p/security-audit --config=p/secrets ./src
 **Example: Semgrep catches SQL Injection**
 
 ```python
-# ❌ Vulnerable code — Semgrep will flag this
+# ❌ Vulnerable code Semgrep will flag this
 def get_user(username):
     query = f"SELECT * FROM users WHERE username = '{username}'"
     cursor.execute(query)   # SQL Injection vulnerability
 
-# ✅ Safe code — parameterized query
+# ✅ Safe code parameterized query
 def get_user(username):
     query = "SELECT * FROM users WHERE username = %s"
     cursor.execute(query, (username,))
@@ -1807,7 +1807,7 @@ sonar.python.coverage.reportPaths=coverage.xml
 
 ---
 
-### 9.2 SCA — Software Composition Analysis
+### 9.2 SCA Software Composition Analysis
 
 Modern applications are 80% third-party code (libraries, frameworks, packages). SCA checks every dependency you use against databases of known vulnerabilities (CVEs).
 
@@ -1877,9 +1877,9 @@ dependency-check --project "My App" --scan ./src --format HTML
 
 ---
 
-### 9.3 DAST — Dynamic Application Security Testing
+### 9.3 DAST Dynamic Application Security Testing
 
-DAST is the most realistic security test. It **actually attacks your running application** the same way a real hacker would — sending malicious inputs, probing endpoints, testing authentication.
+DAST is the most realistic security test. It **actually attacks your running application** the same way a real hacker would sending malicious inputs, probing endpoints, testing authentication.
 
 **What DAST finds that SAST cannot:**
 - Authentication and session management flaws
@@ -1906,7 +1906,7 @@ DAST is the most realistic security test. It **actually attacks your running app
 
 OWASP ZAP is the most widely used open-source DAST tool.
 
-**Baseline scan (passive — no active attacks, safe for any environment):**
+**Baseline scan (passive no active attacks, safe for any environment):**
 
 ```yaml
 # .github/workflows/dast.yaml
@@ -1915,10 +1915,10 @@ OWASP ZAP is the most widely used open-source DAST tool.
   with:
     target: 'https://staging.your-app.com'
     # Baseline scan: crawls and passively checks for issues
-    # Does NOT send attack payloads — safe for staging
+    # Does NOT send attack payloads safe for staging
 ```
 
-**Full scan (active — sends real attack payloads, staging only):**
+**Full scan (active sends real attack payloads, staging only):**
 
 ```yaml
 - name: ZAP Full Scan
@@ -1928,7 +1928,7 @@ OWASP ZAP is the most widely used open-source DAST tool.
     rules_file_name: '.zap/rules.tsv'
     cmd_options: '-a -j'
     # Full scan: actively tests for SQL injection, XSS, etc.
-    # ONLY run against staging — NEVER against production
+    # ONLY run against staging NEVER against production
 ```
 
 **Custom ZAP rules file (`.zap/rules.tsv`):**
@@ -1945,7 +1945,7 @@ OWASP ZAP is the most widely used open-source DAST tool.
 
 ---
 
-### 9.4 SAST vs DAST vs SCA — Quick Reference
+### 9.4 SAST vs DAST vs SCA Quick Reference
 
 | | SAST | SCA | DAST |
 |--|------|-----|------|
