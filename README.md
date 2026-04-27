@@ -2031,4 +2031,4 @@ Putting it all together - here is the complete DevSecOps security checklist orga
 ---
 
 Built with a security-first mindset.
-Every commit is a security decision. Make it count That's it. A Big Bye from Mathanprasath K!.
+Every commit is a security decision. Make it count That's it. A Big Bye from Mathanprasath K!
